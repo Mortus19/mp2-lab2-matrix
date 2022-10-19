@@ -37,15 +37,34 @@ public:
   }
   TDynamicVector(const TDynamicVector& v)
   {
+      sz = v.sz;
+      pMem = new T[v.sz];
+      for(int i = 0;i<sz;i++){
+          pMem[i] = v.pMem[i];
+      }
   }
   TDynamicVector(TDynamicVector&& v) noexcept
   {
+      pMem = v.pMem;
+      sz = v.sz;
+      v.sz = 0;
+      v.pMem = nullptr;
   }
   ~TDynamicVector()
   {
+      if(pMem != nullptr)
+          delete []pMem;
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
+      if(pMem != nullptr)
+          delete []pMem;
+      sz = v.sz;
+      pMem = new T[sz];
+      for(int i = 0;i<sz;i++){
+          pMem[i] = v.pMem[i];
+      }
+      return *this;
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept
   {
