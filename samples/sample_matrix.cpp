@@ -3,7 +3,6 @@
 // Copyright (c) Сысоев А.В.
 //
 // Тестирование матриц
-
 #include <iostream>
 #include "tmatrix.h"
 //---------------------------------------------------------------------------
@@ -12,7 +11,6 @@ int main()
 {
   TDynamicMatrix<int> a(5), b(5), c(5);
   int i, j;
-
   setlocale(LC_ALL, "RUS");
   cout << "Тестирование класс работы с матрицами"<< endl;
   for (i = 0; i < 5; i++)

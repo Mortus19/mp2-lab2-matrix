@@ -169,7 +169,6 @@ public:
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
-      //?
       T ans{};
       int size = min(sz, v.sz);
       for(int i = 0;i<size;i++){
@@ -230,9 +229,8 @@ public:
   }
 
   // матрично-скалярные операции
-  TDynamicVector<T> operator*(const T& val)
+  TDynamicMatrix<T> operator*(const T& val)
   {
-      //Тут разве не матрицу нужно возвращать???
       TDynamicMatrix t(sz);
       for(int i = 0;i<sz;i++){
           t.pMem[i]=pMem[i] * val;
@@ -265,7 +263,6 @@ public:
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-
       TDynamicMatrix t(sz);
       for(int i = 0;i<sz;i++){
           t[i] = pMem[i] - m.pMem[i];
