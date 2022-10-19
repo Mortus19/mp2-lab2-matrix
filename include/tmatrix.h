@@ -170,7 +170,7 @@ public:
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
       //?
-      T ans = 0;
+      T ans{};
       int size = min(sz, v.sz);
       for(int i = 0;i<size;i++){
           ans += pMem[i] * v.pMem[i];
@@ -243,9 +243,13 @@ public:
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
-      TDynamicMatrix t(sz);
+      TDynamicVector t(sz);
       for(int i = 0;i<sz;i++){
-          t.pMem[i]=pMem[i] * val;
+          T tmp{};
+          for(int j = 0;j<sz;j++){
+              tmp+= v[i] * pMem[i][j];
+          }
+          t[i] = tmp;
       }
       return t;
   }
@@ -253,20 +257,50 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
+      TDynamicMatrix t(sz);
+      for(int i = 0;i<sz;i++){
+          t[i] = pMem[i] + m.pMem[i];
+      }
+      return t;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
+
+      TDynamicMatrix t(sz);
+      for(int i = 0;i<sz;i++){
+          t[i] = pMem[i] - m.pMem[i];
+      }
+      return t;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
+      TDynamicMatrix t(sz);
+      for(int i = 0;i<sz;i++){
+          for(int j = 0;j<sz;j++){
+              T tmp{};
+              for(int k = 0;k<sz;k++){
+                  tmp+= pMem[i][k] * m.pMem[j][k];
+              }
+              t[i][j] = tmp;
+          }
+      }
+      return t;
   }
 
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
+      for(int i = 0;i<sz;i++){
+          istr>>v.pMem[i];
+      }
+      return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
+      for(int i = 0;i<v.sz;i++){
+          ostr<<v.pMem[i]<<'\n';
+      }
+      return ostr;
   }
 };
 
