@@ -25,7 +25,7 @@ protected:
 public:
   TDynamicVector(size_t size = 1) : sz(size)
   {
-    if (sz <= 0)
+    if (sz < 0 || sz>MAX_MATRIX_SIZE)
       throw out_of_range("Vector size should be greater than zero");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
@@ -56,6 +56,8 @@ public:
   }
   TDynamicVector& operator=(const TDynamicVector& v)
   {
+      if(*this == v)
+          return *this;
       if(pMem != nullptr)
           delete []pMem;
       sz = v.sz;
@@ -161,9 +163,10 @@ public:
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
+      if(sz != v.sz)
+          throw exception();
       T ans{};
-      int size = min(sz, v.sz);
-      for(int i = 0;i<size;i++){
+      for(int i = 0;i<sz;i++){
           ans += pMem[i] * v.pMem[i];
       }
       return ans;
