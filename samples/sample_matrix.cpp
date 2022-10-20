@@ -9,7 +9,7 @@
 
 int main()
 {
-  TDynamicMatrix<int> a(3), b(3), c(3);
+  TDynamicMatrix<int> a(5), b(5), c(5);
   int i, j;
   setlocale(LC_ALL, "RUS");
   cout << "Тестирование класс работы с матрицами"<< endl;
