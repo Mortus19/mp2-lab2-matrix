@@ -163,8 +163,9 @@ public:
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
-      if(sz != v.sz)
-          throw exception();
+      //Почему noexcept? Если разные размеры векторов, то мы можем посчитать их скалярное произведение?
+//      if(sz != v.sz)
+//          throw exception();
       T ans{};
       for(int i = 0;i<sz;i++){
           ans += pMem[i] * v.pMem[i];
@@ -204,11 +205,15 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+      if(s <= 0 || s > MAX_MATRIX_SIZE)
+          throw exception();
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
+  using TDynamicVector<TDynamicVector<T>>::size;
+  using TDynamicVector<TDynamicVector<T>>::at;
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
