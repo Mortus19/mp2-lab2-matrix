@@ -232,9 +232,7 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 {
-    //Странный тест
-//    TDynamicVector<int>v1(3);
-//    TDynamicVector<int>v2(4);
-//    ASSERT_ANY_THROW(int ans = v1*v2);
-    ADD_FAILURE();
+    TDynamicVector<int>v1(3);
+    TDynamicVector<int>v2(4);
+    ASSERT_ANY_THROW(int ans = v1*v2);
 }

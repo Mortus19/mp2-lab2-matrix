@@ -32,7 +32,7 @@ public:
   TDynamicVector(T* arr, size_t s) : sz(s)
   {
     assert(arr != nullptr && "TDynamicVector ctor requires non-nullptr arg");
-    pMem = new T[sz];
+    pMem = new T[sz]();
     std::copy(arr, arr + sz, pMem);
   }
   TDynamicVector(const TDynamicVector& v)
@@ -161,11 +161,10 @@ public:
       }
       return t;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v)
   {
-      //Почему noexcept? Если разные размеры векторов, то мы можем посчитать их скалярное произведение?
-//      if(sz != v.sz)
-//          throw exception();
+      if(sz != v.sz)
+          throw exception();
       T ans{};
       for(int i = 0;i<sz;i++){
           ans += pMem[i] * v.pMem[i];
@@ -210,6 +209,7 @@ public:
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
+  TDynamicMatrix(const TDynamicVector<TDynamicVector<T>> &s) : TDynamicVector<TDynamicVector<T>>(s){}
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
   using TDynamicVector<TDynamicVector<T>>::size;
@@ -218,24 +218,13 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
-     if(sz != m.sz){
-         return false;
-     }
-     for(int i = 0;i<sz;i++){
-         if(pMem[i] != m.pMem[i])
-             return false;
-     }
-     return true;
+     return TDynamicVector<TDynamicVector<T>>::operator==(m);
   }
 
   // матрично-скалярные операции
   TDynamicMatrix<T> operator*(const T& val)
   {
-      TDynamicMatrix t(sz);
-      for(int i = 0;i<sz;i++){
-          t.pMem[i]=pMem[i] * val;
-      }
-      return t;
+      return TDynamicVector<TDynamicVector<T>>::operator*(val);
   }
 
   // матрично-векторные операции
@@ -252,23 +241,11 @@ public:
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
-      if(m.sz != sz)
-          throw exception();
-      TDynamicMatrix t(sz);
-      for(int i = 0;i<sz;i++){
-          t[i] = pMem[i] + m.pMem[i];
-      }
-      return t;
+      return TDynamicVector<TDynamicVector<T>>::operator+(m);
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
-      if(m.sz != sz)
-          throw exception();
-      TDynamicMatrix t(sz);
-      for(int i = 0;i<sz;i++){
-          t[i] = pMem[i] - m.pMem[i];
-      }
-      return t;
+      return TDynamicVector<TDynamicVector<T>>::operator-(m);
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
